@@ -16,9 +16,9 @@ logs
 results
 # dist
 # test coverage files
-# .coverage/
+.coverage/
 
 node_modules
 npm-debug.log
 
-# template/**/*.js
+template/**/*.js

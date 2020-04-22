@@ -19,20 +19,20 @@ results
 node_modules
 npm-debug.log
 
-.git
-docs
-misc
-.editorconfig
-.gitattributes
-.gitignore
-.jshintrc
-.travis.yml
-CONTRIBUTING.md
-Gruntfile.js
-karma.conf.js
-ROADMAP.md
+# .git
+# docs
+# misc
+# .editorconfig
+# .gitattributes
+# .gitignore
+# .jshintrc
+# .travis.yml
+# CONTRIBUTING.md
+# Gruntfile.js
+# karma.conf.js
+# ROADMAP.md
 
-dist/assets
-dist/index.html
-dist/versions-mapping.json
-dist/*-SNAPSHOT*
+# dist/assets
+# dist/index.html
+# dist/versions-mapping.json
+# dist/*-SNAPSHOT*

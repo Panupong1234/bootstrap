@@ -1,6 +1,8 @@
 angular.module('ui.bootstrap.demo').controller('DatepickerDemoCtrl', function ($scope) {
   $scope.today = function() {
-    $scope.dt = new Date();
+    let now = new Date()
+    // now.setFullYear(now.getFullYear() + 543);
+    $scope.dt = now
   };
   $scope.today();
 

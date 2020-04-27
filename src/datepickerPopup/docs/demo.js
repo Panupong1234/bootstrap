@@ -17,7 +17,7 @@ angular.module('ui.bootstrap.demo').controller('DatepickerPopupDemoCtrl', functi
   $scope.dateOptions = {
     dateDisabled: disabled,
     formatYear: 'yy',
-    maxDate: new Date(2020, 5, 22),
+    maxDate: new Date(2021, 2, 22),
     minDate: new Date(),
     startingDay: 1
   };

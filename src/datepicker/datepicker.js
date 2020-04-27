@@ -30,13 +30,54 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
       ngModelCtrl = { $setViewValue: angular.noop }, // nullModelCtrl;
       ngModelOptions = {},
       watchListeners = [];
-
+  $scope.isThaiCalendar = true
   $element.addClass('uib-datepicker');
   $attrs.$set('role', 'application');
-
   if (!$scope.datepickerOptions) {
     $scope.datepickerOptions = {};
   }
+  var DATETIME_FORMATS = $locale.DATETIME_FORMATS
+
+  DATETIME_FORMATS.SHORTDAY = ["อา.", "จ.", "อ.", "พ.", "พฤ.", "ศ.", "ส."];
+  DATETIME_FORMATS.DAY = [
+    "วันอาทิตย์",
+    "วันจันทร์",
+    "วันอังคาร",
+    "วันพุธ",
+    "วันพฤหัสบดี",
+    "วันศุกร์",
+    "วันเสาร์"
+  ];
+  DATETIME_FORMATS.MONTH = [
+    "มกราคม",
+    "กุมภาพันธ์",
+    "มีนาคม",
+    "เมษายน",
+    "พฤษภาคม",
+    "มิถุนายน",
+    "กรกฎาคม",
+    "สิงหาคม",
+    "กันยายน",
+    "ตุลาคม",
+    "พฤศจิกายน",
+    "ธันวาคม"
+  ];
+  DATETIME_FORMATS.STANDALONEMONTH = DATETIME_FORMATS.MONTH
+  DATETIME_FORMATS.SHORTMONTH = [
+    "ม.ค.",
+    "ก.พ.",
+    "มี.ค.",
+    "เม.ย.",
+    "พ.ค.",
+    "มิ.ย.",
+    "ก.ค.",
+    "ส.ค.",
+    "ก.ย.",
+    "ต.ค.",
+    "พ.ย.",
+    "ธ.ค."
+  ];
+  DATETIME_FORMATS.AMPMS = ["ก่อนเที่ยง", "หลังเที่ยง"];
 
   // Modes chain
   this.modes = ['day', 'month', 'year'];
@@ -163,6 +204,10 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
     ngModelCtrl = ngModelCtrl_;
     ngModelOptions = extractOptions(ngModelCtrl);
 
+    if(ngModelCtrl.$modelValue){
+      ngModelCtrl.$modelValue = new Date(ngModelCtrl.$modelValue)
+    }
+    
     if ($scope.datepickerOptions.initDate) {
       self.activeDate = dateParser.fromTimezone($scope.datepickerOptions.initDate, ngModelOptions.getOption('timezone')) || new Date();
       $scope.$watch('datepickerOptions.initDate', function(initDate) {
@@ -179,7 +224,6 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
     this.activeDate = !isNaN(date) ?
       dateParser.fromTimezone(date, ngModelOptions.getOption('timezone')) :
       dateParser.fromTimezone(new Date(), ngModelOptions.getOption('timezone'));
-
     ngModelCtrl.$render = function() {
       self.render();
     };
@@ -203,6 +247,8 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
     if (this.element) {
       $scope.selectedDt = null;
       this._refreshView();
+      // ngModelCtrl.$modelValue.setFullYear(new Date(ngModelCtrl.$modelValue).getFullYear() + 543);
+      // console.log('$scope.activeDt ====> ', $scope.activeDt, ngModelCtrl)
       if ($scope.activeDt) {
         $scope.activeDateId = $scope.activeDt.uid;
       }
@@ -220,9 +266,13 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
     var today = new Date();
     today = dateParser.fromTimezone(today, ngModelOptions.getOption('timezone'));
     var time = this.compare(date, today);
+    var label = dateParser.filter(date, format)
+    if(format == 'yyyy' && $scope.isThaiCalendar){
+      // label = Number(label) + 543
+    }
     var dt = {
       date: date,
-      label: dateParser.filter(date, format),
+      label: label,
       selected: model && this.compare(date, model) === 0,
       disabled: this.isDisabled(date),
       past: time < 0,
@@ -386,7 +436,6 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
 
 .controller('UibDaypickerController', ['$scope', '$element', 'dateFilter', function(scope, $element, dateFilter) {
   var DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-
   this.step = { months: 1 };
   this.element = $element;
   function getDaysInMonth(year, month) {
@@ -434,7 +483,7 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
         uid: scope.uniqueId + '-' + i
       });
     }
-
+    
     scope.labels = new Array(7);
     for (var j = 0; j < 7; j++) {
       scope.labels[j] = {
@@ -442,8 +491,9 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
         full: dateFilter(days[j].date, 'EEEE')
       };
     }
-
-    scope.title = dateFilter(this.activeDate, this.formatDayTitle);
+    var activeTitle = new Date(this.activeDate)
+    // activeTitle.setFullYear(activeTitle.getFullYear() + 543);
+    scope.title = dateFilter(activeTitle, this.formatDayTitle);
     scope.rows = this.split(days, 7);
 
     if (scope.showWeeks) {
@@ -519,8 +569,9 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
         uid: scope.uniqueId + '-' + i
       });
     }
-
-    scope.title = dateFilter(this.activeDate, this.formatMonthTitle);
+    var activeTitle = new Date(this.activeDate)
+    // activeTitle.setFullYear(activeTitle.getFullYear() + 543);
+    scope.title = dateFilter(activeTitle, this.formatMonthTitle);
     scope.rows = this.split(months, this.monthColumns);
     scope.yearHeaderColspan = this.monthColumns > 3 ? this.monthColumns - 2 : 1;
   };

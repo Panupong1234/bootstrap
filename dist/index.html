@@ -1688,7 +1688,9 @@ Number of columns displayed in year selection.</p>
                                         <div plunker-content="javascript">
                                             <pre ng-non-bindable><code data-language="javascript">angular.module(&#x27;ui.bootstrap.demo&#x27;).controller(&#x27;DatepickerDemoCtrl&#x27;, function ($scope) {
   $scope.today = function() {
-    $scope.dt = new Date();
+    let now = new Date()
+    // now.setFullYear(now.getFullYear() + 543);
+    $scope.dt = now
   };
   $scope.today();
 
@@ -1761,7 +1763,9 @@ Number of columns displayed in year selection.</p>
                     </section>
                     <script>angular.module('ui.bootstrap.demo').controller('DatepickerDemoCtrl', function ($scope) {
   $scope.today = function() {
-    $scope.dt = new Date();
+    let now = new Date()
+    // now.setFullYear(now.getFullYear() + 543);
+    $scope.dt = now
   };
   $scope.today();
 
@@ -2074,7 +2078,7 @@ The format for displayed dates. This string can take string literals by surround
   $scope.dateOptions = {
     dateDisabled: disabled,
     formatYear: &#x27;yy&#x27;,
-    maxDate: new Date(2020, 5, 22),
+    maxDate: new Date(2021, 2, 22),
     minDate: new Date(),
     startingDay: 1
   };
@@ -2176,7 +2180,7 @@ The format for displayed dates. This string can take string literals by surround
   $scope.dateOptions = {
     dateDisabled: disabled,
     formatYear: 'yy',
-    maxDate: new Date(2020, 5, 22),
+    maxDate: new Date(2021, 2, 22),
     minDate: new Date(),
     startingDay: 1
   };

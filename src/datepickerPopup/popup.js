@@ -1,3 +1,20 @@
+const DATETIME_FORMATS = { 
+      MONTH : [
+      "มกราคม",
+      "กุมภาพันธ์",
+      "มีนาคม",
+      "เมษายน",
+      "พฤษภาคม",
+      "มิถุนายน",
+      "กรกฎาคม",
+      "สิงหาคม",
+      "กันยายน",
+      "ตุลาคม",
+      "พฤศจิกายน",
+      "ธันวาคม"
+    ]
+}
+
 angular.module('ui.bootstrap.datepickerPopup', ['ui.bootstrap.datepicker', 'ui.bootstrap.position'])
 
 .value('$datepickerPopupLiteralWarning', true)
@@ -61,7 +78,6 @@ function($scope, $element, $attrs, $compile, $log, $parse, $window, $document, $
       dateFormat = $attrs.uibDatepickerPopup || datepickerPopupConfig.datepickerPopup;
       $attrs.$observe('uibDatepickerPopup', function(value, oldValue) {
         var newDateFormat = value || datepickerPopupConfig.datepickerPopup;
-        // Invalidate the $modelValue to ensure that formatters re-run
         // FIXME: Refactor when PR is merged: https://github.com/angular/angular.js/pull/10764
         if (newDateFormat !== dateFormat) {
           dateFormat = newDateFormat;
@@ -136,7 +152,8 @@ function($scope, $element, $attrs, $compile, $log, $parse, $window, $document, $
 
     // Detect changes in the view from the text box
     ngModel.$viewChangeListeners.push(function() {
-      $scope.date = parseDateString(ngModel.$viewValue);
+      var dateView = ngModel.$viewValue
+      $scope.date = parseDateString(dateView);
     });
 
     $element.on('keydown', inputKeydownBind);

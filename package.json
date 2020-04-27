@@ -10,7 +10,9 @@
     "bootstrap",
     "ui"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "moment": "^2.24.0"
+  },
   "directories": {
     "lib": "src/"
   },
